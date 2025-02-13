@@ -1,0 +1,54 @@
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
+
+cmake(
+    name = "libhello",
+    lib_source = "//lib:srcs",
+    out_shared_libs = select({
+        "@platforms//os:macos": [
+            "libhello.dylib",
+        ],
+        "@platforms//os:windows": [
+            "hello.dll",
+        ],
+        "//conditions:default": [
+            "libhello.so",
+        ],
+    }),
+    out_static_libs = select({
+        "@platforms//os:macos": [
+            "libhello.a",
+        ],
+        "@platforms//os:windows": [
+            "hello.lib",
+        ],
+        "//conditions:default": [
+            "libhello.a",
+        ],
+    }),
+)
+
+cc_binary(
+    name = "hello_bin_static",
+    srcs = ["//app:main.cpp"],
+    deps = [":libhello"],
+)
+
+cc_binary(
+    name = "hello_bin_shared",
+    srcs = ["//app:main.cpp"],
+    linkstatic = False,
+    deps = [":libhello"],
+)
+
+cc_test(
+    name = "test_hello_shared",
+    srcs = ["//lib:test_hello.cpp"],
+    deps = [":libhello"],
+)
+
+cc_test(
+    name = "test_hello_static",
+    srcs = ["//lib:test_hello.cpp"],
+    linkstatic = True,
+    deps = [":libhello"],
+)

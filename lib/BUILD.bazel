@@ -1,0 +1,14 @@
+exports_files([
+    "test_hello.cpp"
+])
+
+filegroup(
+    name = "srcs",
+    srcs = [
+        "CMakeLists.txt",
+        "hello.cpp",
+        "hello.h",
+        "test_hello.cpp"
+    ],
+   visibility = ["//visibility:public"],
+)
