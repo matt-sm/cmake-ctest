@@ -52,3 +52,35 @@ cc_test(
     linkstatic = True,
     deps = [":libhello"],
 )
+
+cc_library(
+    name = "hello",
+    hdrs = ["//lib:hello.h"],
+    srcs = ["//lib:hello.cpp", "//lib:hello.h"],
+)
+
+cc_library(
+    name = "hello2_cc_dep",
+    srcs = ["//lib2:hello2.cpp", "//lib2:hello2.h"],
+    includes = ["lib"],
+    deps = [":hello"],
+)
+
+cc_test(
+    name = "test_hello2_shared",
+    srcs = ["//lib2:test_hello2.cpp"],
+    deps = [":hello2_cc_dep"],
+)
+
+cc_test(
+    name = "test_hello2_static",
+    srcs = ["//lib2:test_hello2.cpp"],
+    linkstatic = True,
+    deps = [":hello2_cc_dep"],
+)
+
+cc_library(
+    name = "hello2_cmake_dep",
+    srcs = ["//lib2:hello2.cpp", "//lib2:hello2.h"],
+    deps = [":libhello"],
+)

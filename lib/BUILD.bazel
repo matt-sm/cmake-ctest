@@ -1,5 +1,7 @@
 exports_files([
-    "test_hello.cpp"
+    "test_hello.cpp",
+    "hello.h",
+    "hello.cpp",
 ])
 
 filegroup(
